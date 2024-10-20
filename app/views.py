@@ -21,3 +21,7 @@ def product_create(request):
     else:
         form = ProductForm()
     return render(request, 'app/product_form.html', {'form': form})
+
+def home(request):
+    products = Product.objects.all()  # Fetch all products
+    return render(request, 'app/home.html', {'products': products})
