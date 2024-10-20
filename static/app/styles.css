@@ -40,6 +40,24 @@ body {
     margin-left: 50px;
 }
 
+.sidenav button.logout-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    padding: 8px 32px;
+    text-align: left;
+    font-size: 20px;
+    width: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav button.logout-btn:hover {
+    color: #f26522;
+}
+
 .toggle_icon {
     cursor: pointer;
     color: #000; /* Change to black for better visibility */
@@ -51,6 +69,24 @@ body {
 .content {
     margin-left: 20px; /* Adjust margin to leave space for the drawer */
     padding: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px; /* Adjust padding as needed */
+}
+
+.user-icon {
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%; /* Makes the image circular */
+    margin-right: 10px; /* Space between icon and username */
+}
+
+.username {
+    font-size: 18px; /* Adjust font size as needed */
+    color: #ffffff; /* Adjust text color as needed */
 }
 
 .product-grid {

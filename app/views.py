@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product
 from .forms import ProductForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
 
 def product_list(request):
     products = Product.objects.all()
@@ -25,3 +27,32 @@ def product_create(request):
 def home(request):
     products = Product.objects.all()  # Fetch all products
     return render(request, 'app/home.html', {'products': products})
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Automatically log in the user after registration
+            return redirect('product_list')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})  # Create a register.html template
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Redirect to the product list or homepage
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')  # Redirect to the login page after logout
