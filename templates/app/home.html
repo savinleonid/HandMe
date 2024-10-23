@@ -13,8 +13,8 @@
         <a class="closebtn" href="javascript:void(0)" onclick="closeNav()">&times;</a>
         {% if user.is_authenticated %}
             <div class="user-info">
-                <a href="{% url 'home' %}">
-                    <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="user-icon"> {{ user.username }}
+                <a href="{% url 'profile' %}">
+                    <img src="{{ profile_picture }}" alt="{{ user.username }}" class="user-icon"> Welcome,<br> {{  user.username|title }}!
                 </a>
             </div>
             <form method="post" action="{% url 'logout' %}">
@@ -24,27 +24,49 @@
         {% else %}
             <a href="{% url 'login' %}">Sign In</a>
         {% endif %}
-        <a href="{% url 'product_list' %}">Home</a>
+        <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'product_create' %}">Add Product</a>
     </div>
 
     <div class="content">
-        <span class="toggle_icon" onclick="openNav()">
-            <i class="fas fa-bars" style="font-size: 30px; color: black;"></i> <!-- Drawer icon -->
-        </span>
-
-        <h1>All Products</h1>
+        <div class="header">
+            <span class="toggle_icon" onclick="openNav()">
+                <i class="fas fa-bars" style="font-size: 30px; color: black;"></i>
+            </span>
+    
+            <div class="title">
+                <h1>HandMe</h1>
+                <h3>all in one place</h3>
+            </div>
+    
+            <div class="search-box">
+                <form method="GET" action="{% url 'home' %}">
+                    <input type="text" name="q" placeholder="Search products..." class="search-input" value="{{ request.GET.q }}">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i> <!-- Adding a search icon inside the button -->
+                    </button>
+                </form>
+            </div>
+        </div>
+    
+        {% if query %}
+            <h2>Search results for "{{ query }}": {{ products|length }} result(s) found.</h2>
+        {% endif %}
+        
         <div class="product-grid">
             {% for product in products %}
-                <div class="product-card">
-                    <h3>{{ product.title }}</h3>
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                    {% else %}
-                        <img src="https://via.placeholder.com/150" alt="Default Image"> <!-- Placeholder for missing images -->
-                    {% endif %}
-                    <p>{{ product.description }}</p>
-                </div>
+                <a href="{% url 'product_detail' product.pk %}" class="product-link">
+                    <div class="product-card">
+                        <h3>{{ product.title }}</h3>
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" alt="Default Image"> <!-- Placeholder for missing images -->
+                        {% endif %}
+                        <p>{{ product.description }}</p>
+                        <p>${{ product.price }}</p>
+                    </div>
+                </a>
             {% endfor %}
         </div>
     </div>

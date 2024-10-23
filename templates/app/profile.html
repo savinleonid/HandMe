@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<body>
+    <div class="content profile-page">
+        <h2>Your Profile</h2>
+        <div class="profile-card">
+            <!-- Profile Picture Section -->
+            <div class="profile-picture">
+                {% if user.profile.profile_picture %}
+                    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <img src="{% static 'profile_pics/default.png' %}" alt="Default Profile Picture">
+                {% endif %}
+            </div>
+            
+            <!-- Profile Information Section -->
+            <div class="profile-info">
+                <h3>{{ user.username }}</h3>
+                <p>Email: {{ user.email }}</p>
+
+                <!-- Form to update profile picture -->
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="id_profile_picture">Update Profile Picture:</label>
+                    {{ form.profile_picture }}
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="{% url 'home' %}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+</body>
+</html>

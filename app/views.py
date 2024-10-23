@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product
-from .forms import ProductForm
+from .models import Product, Profile
+from .forms import ProductForm, ProfileForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
+
 
 def product_list(request):
     products = Product.objects.all()
@@ -25,8 +29,25 @@ def product_create(request):
     return render(request, 'app/product_form.html', {'form': form})
 
 def home(request):
-    products = Product.objects.all()  # Fetch all products
-    return render(request, 'app/home.html', {'products': products})
+    query = request.GET.get('q', '')  # Get the search query from the request
+    products = Product.objects.all()  # Default to showing all products
+
+    # Filter products based on search query
+    if query:
+        products = products.filter(
+            Q(title__icontains=query) | Q(description__icontains=query) | Q(price__icontains=query)
+        )
+
+    # Fetch the user's profile picture if authenticated
+    profile_picture = None
+    if request.user.is_authenticated:
+        profile_picture = request.user.profile.profile_picture.url
+
+    return render(request, 'app/home.html', {
+        'products': products,
+        'profile_picture': profile_picture,
+        'query': query,  # Pass the search query back to the template
+    })
 
 def register_view(request):
     if request.method == 'POST':
@@ -34,7 +55,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)  # Automatically log in the user after registration
-            return redirect('product_list')
+            return redirect('home')
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})  # Create a register.html template
@@ -56,3 +77,16 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')  # Redirect to the login page after logout
+
+
+@login_required
+def profile_view(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=request.user.profile)
+
+    return render(request, 'app/profile.html', {'form': form})

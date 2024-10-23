@@ -10,4 +10,6 @@ urlpatterns = [
     path('product/<int:pk>/', product_detail, name='product_detail'),  # Detail view for a product
     path('register/', register_view, name='register'),
     path('product_create/', product_create, name='product_create'),
+    path('profile/', profile_view, name='profile'),
+
 ]

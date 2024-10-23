@@ -1,19 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }}</title>
+    <title>{{ product.title }}</title>
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
 </head>
 <body>
-    <h1>{{ product.name }}</h1>
-    <p>{{ product.description }}</p>
-    <p>Price: ${{ product.price }}</p>
-    <p>Category: {{ product.category.name }}</p>
-    <p>Location: {{ product.location }}</p>
-    {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-    {% endif %}
-    <a href="{% url 'product_list' %}">Back to Product List</a>
+    <div class="content">
+        <a href="{% url 'home' %}" class="back-button">Back</a>
+        <h1>{{ product.title }}</h1>
+        <div class="product-detail">
+            <div class="image-section">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; height: auto;">
+                {% else %}
+                    <img src="https://via.placeholder.com/400" alt="Default Image" style="width: 100%; height: auto;"> <!-- Placeholder for missing images -->
+                {% endif %}
+            </div>
+            <div class="info-section">
+                <h2>Description</h2>
+                <p>{{ product.description }}</p>
+                <h3>Price: ${{ product.price }}</h3>
+                <button class="btn">Call Seller</button> <!-- Or any other action -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
