@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Profile
+from .models import Product, Profile, Category
 from .forms import ProductForm, ProfileForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
@@ -31,12 +31,18 @@ def product_create(request):
 def home(request):
     query = request.GET.get('q', '')  # Get the search query from the request
     products = Product.objects.all()  # Default to showing all products
+    category_id = request.GET.get('category')  # Selected category ID
 
     # Filter products based on search query
     if query:
         products = products.filter(
             Q(title__icontains=query) | Q(description__icontains=query) | Q(price__icontains=query)
         )
+
+    if category_id:
+        products = products.filter(category_id=category_id)
+
+    categories = Category.objects.all()
 
     # Fetch the user's profile picture if authenticated
     profile_picture = None
@@ -45,6 +51,8 @@ def home(request):
 
     return render(request, 'app/home.html', {
         'products': products,
+        'categories': categories,
+        'selected_category': category_id,
         'profile_picture': profile_picture,
         'query': query,  # Pass the search query back to the template
     })
