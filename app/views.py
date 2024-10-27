@@ -31,18 +31,28 @@ def product_create(request):
 def home(request):
     query = request.GET.get('q', '')  # Get the search query from the request
     products = Product.objects.all()  # Default to showing all products
-    category_id = request.GET.get('category')  # Selected category ID
+    category_id = request.GET.get('category', '')  # Selected category ID
+    location = request.GET.get('location', '')  # Get the selected location
 
     # Filter products based on search query
     if query:
         products = products.filter(
-            Q(title__icontains=query) | Q(description__icontains=query) | Q(price__icontains=query)
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(price__icontains=query) |
+            Q(location__icontains=query)
         )
 
     if category_id:
         products = products.filter(category_id=category_id)
 
+    if location:
+        products = products.filter(location=location)
+
     categories = Category.objects.all()
+
+    # Fetch unique locations from the products
+    locations = Product.objects.values_list('location', flat=True).distinct()
 
     # Fetch the user's profile picture if authenticated
     profile_picture = None
@@ -52,7 +62,9 @@ def home(request):
     return render(request, 'app/home.html', {
         'products': products,
         'categories': categories,
+        'locations': locations,  # Pass the unique locations to the template
         'selected_category': category_id,
+        'selected_location': location,  # Pass the selected location back to the template
         'profile_picture': profile_picture,
         'query': query,  # Pass the search query back to the template
     })

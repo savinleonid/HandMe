@@ -102,6 +102,7 @@
                 </div>
                 <span class="toggle_icon" onclick="openNav()"><img src="{% static 'utils_img/toggle-icon.png' %}"
                                                                    alt="toggle_icon"></span>
+                <!-- Category Dropdown -->
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -116,21 +117,24 @@
                         {% endif %}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{% url 'home' %}">All Categories</a>
+                        <a class="dropdown-item" href="{% url 'home' %}?location={{ selected_location }}&q={{ query }}">All Categories</a>
                         {% for category in categories %}
-                            <a class="dropdown-item" href="?category={{ category.id }}">{{ category.name }}</a>
+                            <a class="dropdown-item" href="{% url 'home' %}?category={{ category.id }}&location={{ selected_location }}&q={{ query }}">
+                                {{ category.name }}
+                            </a>
                         {% endfor %}
                     </div>
                 </div>
                 <div class="main">
                     <!-- Another variation with a button -->
+                    <!-- Search Box -->
                     <form method="GET" action="{% url 'home' %}">
                         <div class="input-group">
-                            <input type="text" name="q" class="form-control" placeholder="Search this blog" 
-                                   value="{{ request.GET.q }}">
+                            <input type="text" name="q" class="form-control" placeholder="Search products..." value="{{ request.GET.q }}">
+                            <input type="hidden" name="category" value="{{ selected_category }}">
+                            <input type="hidden" name="location" value="{{ selected_location }}">
                             <div class="input-group-append">
-                                <button class="btn btn-secondary" type="submit"
-                                        style="background-color: #f26522; border-color:#f26522 ">
+                                <button class="btn btn-secondary" type="submit" style="background-color: #f26522; border-color:#f26522 ">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -140,14 +144,23 @@
                 <div class="header_box">
                     <div class="location_box ">
                         <a href="#" title="Location" class="nav-link" data-toggle="dropdown" aria-expanded="true">
-                            <img src="{% static 'utils_img/flag-uk.png' %}" alt="flag" class="mr-2 " title="United Kingdom"> England <i
-                                class="fa fa-angle-down ml-2" aria-hidden="true"></i>
+                            {% if selected_location %}
+                                {% for location in locations %}
+                                    {% if location == selected_location %}
+                                        {{ location }} <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Everywhere <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
+                            {% endif %}
                         </a>
                         <div class="dropdown-menu ">
-                            <a href="#" class="dropdown-item">
-                                <img src="{% static 'utils_img/flag-uk.png' %}" class="mr-2" alt="flag">
-                                France
-                            </a>
+                            <a class="dropdown-item" href="{% url 'home' %}?category={{ selected_category }}&q={{ query }}">Everywhere</a>
+                            {% for location in locations %}
+                                <a href="{% url 'home' %}?location={{ location }}&category={{ selected_category }}&q={{ query }}" class="dropdown-item">
+                                    {{ location }}
+                                </a>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="login_menu">
