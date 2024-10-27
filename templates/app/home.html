@@ -222,18 +222,6 @@
 <!-- banner bg main end -->
 
 <div class="fashion_section">
-{#    <div class="header">#}
-{#        <div class="search-box">#}
-{#            <form method="GET" action="{% url 'home' %}">#}
-{#                <input type="text" name="q" placeholder="Search products..." class="search-input"#}
-{#                       value="{{ request.GET.q }}">#}
-{#                <button type="submit" class="search-btn">#}
-{#                    <i class="fas fa-search"></i> <!-- Adding a search icon inside the button -->#}
-{#                </button>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
-
     {% if query %}
         <h2>Search results for "{{ query }}": {{ products|length }} result(s) found.</h2>
     {% endif %}

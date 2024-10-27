@@ -29,10 +29,14 @@ def product_create(request):
     return render(request, 'app/product_form.html', {'form': form})
 
 def home(request):
-    query = request.GET.get('q', '')  # Get the search query from the request
     products = Product.objects.all()  # Default to showing all products
-    category_id = request.GET.get('category', '')  # Selected category ID
-    location = request.GET.get('location', '')  # Get the selected location
+    query = request.GET.get('q', request.session.get('q_filter', ''))  # Get the search query from the request or session
+    category_id = request.GET.get('category', request.session.get('category_filter', ''))  # Selected category ID or session
+    location = request.GET.get('location', request.session.get('location_filter', ''))  # Get the selected location or session
+
+    request.session['q_filter'] = query
+    request.session['category_filter'] = category_id
+    request.session['location_filter'] = location
 
     # Filter products based on search query
     if query:
@@ -67,6 +71,9 @@ def home(request):
         'selected_location': location,  # Pass the selected location back to the template
         'profile_picture': profile_picture,
         'query': query,  # Pass the search query back to the template
+        'query_filter': query,
+        'category_filter': category_id,
+        'location_filter': location
     })
 
 def register_view(request):
