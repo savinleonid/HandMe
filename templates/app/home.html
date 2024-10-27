@@ -117,7 +117,7 @@
                         {% endif %}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{% url 'home' %}?location={{ selected_location }}&q={{ query }}">All Categories</a>
+                        <a class="dropdown-item" href="{% url 'home' %}?location={{ selected_location }}&q={{ query }}&category={{ '' }}">All Categories</a>
                         {% for category in categories %}
                             <a class="dropdown-item" href="{% url 'home' %}?category={{ category.id }}&location={{ selected_location }}&q={{ query }}">
                                 {{ category.name }}
@@ -155,7 +155,7 @@
                             {% endif %}
                         </a>
                         <div class="dropdown-menu ">
-                            <a class="dropdown-item" href="{% url 'home' %}?category={{ selected_category }}&q={{ query }}">Everywhere</a>
+                            <a class="dropdown-item" href="{% url 'home' %}?category={{ selected_category }}&q={{ query }}&location={{ '' }}">Everywhere</a>
                             {% for location in locations %}
                                 <a href="{% url 'home' %}?location={{ location }}&category={{ selected_category }}&q={{ query }}" class="dropdown-item">
                                     {{ location }}
