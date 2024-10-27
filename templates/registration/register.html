@@ -5,14 +5,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7; /* Light background for better contrast */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 400px; /* Fixed width for better layout */
+            margin: auto;
+            padding: 30px;
+            background-color: #fff; /* White background for the form */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        h2 {
+            color: #2b2a29; /* Dark grey color for the title */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            width: 100%; /* Full width for form */
+        }
+
+        form p {
+            margin: 10px 0;
+        }
+
+        input {
+            width: 100%; /* Full width for inputs */
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #f26522; /* Focus border color */
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #f26522; /* Orange color for button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%; /* Full width button */
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #e0571b; /* Darker shade on hover */
+        }
+
+        .error {
+            color: #d9534f; /* Red color for error messages */
+            font-size: 14px;
+            display: none; /* Hidden by default */
+            margin-top: -10px; /* Adjust position */
+            margin-bottom: 10px; /* Space below the message */
+        }
+
+        p {
+            text-align: center; /* Center the text */
+            margin-top: 15px;
+        }
+
+        a {
+            color: #f26522; /* Link color matches button */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+    <script>
+        function validateForm(event) {
+            event.preventDefault(); // Prevent form submission for validation
+
+            const usernameInput = document.getElementById('id_username');
+            const emailInput = document.getElementById('id_email');
+            const passwordInput = document.getElementById('id_password');
+            const errorMessages = document.querySelectorAll('.error');
+
+            // Reset error messages
+            errorMessages.forEach(msg => msg.style.display = 'none');
+
+            let isValid = true;
+
+            // Validate username
+            if (usernameInput.value.trim() === "") {
+                document.getElementById('username-error').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate email
+            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!emailPattern.test(emailInput.value.trim())) {
+                document.getElementById('email-error').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate password
+            if (passwordInput.value.length < 6) {
+                document.getElementById('password-error').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                event.target.submit(); // Submit form if valid
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="content">
         <h2>Register</h2>
-        <form method="post">
+        <form method="post" onsubmit="validateForm(event)">
             {% csrf_token %}
             {{ form.as_p }}
+
+            <!-- Error Messages -->
+            <div class="error" id="username-error">Please enter a username.</div>
+            <div class="error" id="email-error">Please enter a valid email.</div>
+            <div class="error" id="password-error">Password must be at least 6 characters long.</div>
+
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>

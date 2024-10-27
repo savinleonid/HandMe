@@ -4,9 +4,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="{% static 'app/styles.css' %}">
+    <title>Your Profile</title>
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #2b2a29; /* Dark grey */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .profile-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+        }
+
+        .profile-picture img {
+            width: 100px; /* Fixed size for profile picture */
+            height: 100px;
+            border-radius: 50%; /* Circular profile picture */
+            object-fit: cover; /* Cover to maintain aspect ratio */
+            border: 2px solid #f26522; /* Orange border */
+        }
+
+        .profile-info {
+            flex: 2;
+            text-align: left;
+        }
+
+        .profile-info h3 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #2b2a29;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+        }
+
+        form {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #f26522; /* Orange color for button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e0571b; /* Darker shade on hover */
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #f26522;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #d35400; /* Darker shade on hover */
+        }
+    </style>
 </head>
 <body>
     <div class="content profile-page">
