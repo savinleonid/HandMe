@@ -328,6 +328,24 @@ button {
     color: #f26522;
 }
 
+.sidenav a.sign_in_btn {
+    background: none;
+    border: none;
+    color: #a1ff00;
+    padding: 8px 32px;
+    text-align: left;
+    font-size: 20px;
+    width: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a.sign_in_btn:hover {
+    color: #f26522;
+}
+
 .sidenav {
     height: 100%;
     width: 0;
@@ -409,6 +427,24 @@ button {
 
 .show>.btn-secondary.dropdown-toggle:focus {
     box-shadow: none;
+}
+
+.sidenav button.delete-account-btn {
+    background: none;
+    border: none;
+    color: #ff0202;
+    padding: 8px 32px;
+    text-align: left;
+    font-size: 20px;
+    width: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav button.delete-account-btn:hover {
+    color: #ff3333;
 }
 
 
@@ -1034,3 +1070,7 @@ input.mail_bt::placeholder {
 
 
 /* copyright section end */
+
+/* product detail page start */
+
+/* product detail page end */

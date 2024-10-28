@@ -29,12 +29,6 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
         }
 
-        h2 {
-            color: #2b2a29; /* Dark grey color for the title */
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
         form {
             width: 100%; /* Full width for form */
         }
@@ -74,14 +68,6 @@
             background-color: #e0571b; /* Darker shade on hover */
         }
 
-        .error {
-            color: #d9534f; /* Red color for error messages */
-            font-size: 14px;
-            display: none; /* Hidden by default */
-            margin-top: -10px; /* Adjust position */
-            margin-bottom: 10px; /* Space below the message */
-        }
-
         p {
             text-align: center; /* Center the text */
             margin-top: 15px;
@@ -97,58 +83,22 @@
             text-decoration: underline; /* Underline on hover */
         }
     </style>
-    <script>
-        function validateForm(event) {
-            event.preventDefault(); // Prevent form submission for validation
-
-            const usernameInput = document.getElementById('id_username');
-            const emailInput = document.getElementById('id_email');
-            const passwordInput = document.getElementById('id_password');
-            const errorMessages = document.querySelectorAll('.error');
-
-            // Reset error messages
-            errorMessages.forEach(msg => msg.style.display = 'none');
-
-            let isValid = true;
-
-            // Validate username
-            if (usernameInput.value.trim() === "") {
-                document.getElementById('username-error').style.display = 'block';
-                isValid = false;
-            }
-
-            // Validate email
-            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-            if (!emailPattern.test(emailInput.value.trim())) {
-                document.getElementById('email-error').style.display = 'block';
-                isValid = false;
-            }
-
-            // Validate password
-            if (passwordInput.value.length < 6) {
-                document.getElementById('password-error').style.display = 'block';
-                isValid = false;
-            }
-
-            if (isValid) {
-                event.target.submit(); // Submit form if valid
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="content">
         <h2>Register</h2>
-        <form method="post" onsubmit="validateForm(event)">
+        <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-
-            <!-- Error Messages -->
-            <div class="error" id="username-error">Please enter a username.</div>
-            <div class="error" id="email-error">Please enter a valid email.</div>
-            <div class="error" id="password-error">Password must be at least 6 characters long.</div>
-
-            <button type="submit">Register</button>
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error-message" style="color: red;">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" href="{% url 'home' %}">Register</button>
         </form>
         <p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
     </div>

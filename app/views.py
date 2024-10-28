@@ -105,6 +105,13 @@ def logout_view(request):
     logout(request)
     return redirect('home')  # Redirect to the login page after logout
 
+@login_required
+def delete_account(request):
+    if request.method == "POST":
+        request.user.delete()  # Deletes the user account
+        logout(request)  # Logs out the user
+        return redirect('home')  # Redirect to home after deletion
+
 
 @login_required
 def profile_view(request):

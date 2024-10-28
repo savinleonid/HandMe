@@ -11,5 +11,6 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('product_create/', product_create, name='product_create'),
     path('profile/', profile_view, name='profile'),
+    path('delete_account/', delete_account, name='delete_account'),
 
 ]

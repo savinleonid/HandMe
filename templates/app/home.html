@@ -96,6 +96,11 @@
                             {% csrf_token %}
                             <button class="logout-btn" type="submit" >Logout</button>
                         </form>
+                        
+                        <form id="delete-account-form" method="POST" action="{% url 'delete_account' %}">
+                            {% csrf_token %}
+                            <button type="button" onclick="confirmDelete()" class="delete-account-btn">Delete Account</button>
+                        </form>
                     {% else %}
                         <a class="sign_in_btn" href="{% url 'login' %}">Sign In</a>
                         <a href="{% url 'home' %}">Home</a>
@@ -179,6 +184,30 @@
         </div>
     </div>
     <!-- header section end -->
+    <!-- pop up start -->
+    <div id="delete-popup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>Confirm Account Deletion</h3>
+            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            <button onclick="submitDelete()" class="confirm-btn">Yes, Delete</button>
+            <button onclick="closePopup()" class="cancel-btn">Cancel</button>
+        </div>
+        <script>
+            function confirmDelete() {
+                document.getElementById("delete-popup").style.display = "flex";
+            }
+            
+            function closePopup() {
+                document.getElementById("delete-popup").style.display = "none";
+            }
+            
+            function submitDelete() {
+                document.getElementById("delete-account-form").submit();
+            }
+        </script>
+    </div>
+
+    <!-- pop up end -->
     <!-- banner section start -->
     <div class="banner_section layout_padding">
         <div class="container">
