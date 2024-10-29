@@ -64,15 +64,21 @@ python manage.py migrate
 python manage.py runserver
 ```
 ## Usage
-* Access the homepage to browse available items.<br>
+- Access the homepage to browse available items.<br>
+
 <img src="static/readme/main_page.png">
-* Register or log in to add or manage your own listings.<br>
+
+- Register or log in to add or manage your own listings.<br>
+
 <img src="static/readme/login.png"/>
 <img src="static/readme/register.png">
 <img src="static/readme/loged_in.png">
-* Use search, category filters, and location options for targeted browsing.
+
+- Use search, category filters, and location options for targeted browsing.
 <img src="static/readme/search.png">
-* Add, update or delete products.
+
+- Add, update or delete products.
+
 <p float="left">
     <img src="static/readme/add_prod_1.png" width="400"> 
     <img src="static/readme/add_prod_2.png" width="400">
@@ -83,7 +89,8 @@ python manage.py runserver
 </p>
 <img src="static/readme/popup_delete.png" width="400"> 
 
-* User related profile view.
+- User related profile view.
+
 <p float="left">
     <img src="static/readme/profile_1.png" width="400"> 
     <img src="static/readme/profile_2.png" width="400">
