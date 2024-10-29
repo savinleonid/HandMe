@@ -5,6 +5,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 
@@ -16,17 +19,72 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'app/product_detail.html', {'product': product})
 
+
 def product_create(request):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
+
+            # Check if a new category was entered
+            new_category = request.POST.get("new_category")
+            if new_category:
+                category, created = Category.objects.get_or_create(name=new_category)
+                product.category = category
+            else:
+                # Use selected category if no new category was provided
+                selected_category = request.POST.get("category")
+                if selected_category:
+                    product.category = Category.objects.get(id=selected_category)
+
             product.seller = request.user
             product.save()
-            return redirect('product_list')
+            return redirect("profile")
     else:
         form = ProductForm()
-    return render(request, 'app/product_form.html', {'form': form})
+    categories = Category.objects.all()
+    return render(request, 'app/product_form.html', {'form': form, 'categories': categories})
+
+
+@login_required
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES, instance=product)
+
+        if form.is_valid():
+            product = form.save(commit=False)
+            new_category_name = request.POST.get('new_category')
+            selected_category_id = request.POST.get('category')
+
+            # Assign or create category
+            if new_category_name:
+                category, created = Category.objects.get_or_create(name=new_category_name)
+            elif selected_category_id:
+                category = Category.objects.get(pk=selected_category_id)
+            else:
+                category = None
+
+            product.category = category
+            product.save()
+            return redirect('profile')
+    else:
+        form = ProductForm(instance=product)
+
+    categories = Category.objects.all()
+
+    return render(request, 'app/product_edit.html', {
+        'form': form,
+        'product': product,
+        'categories': categories,
+    })
+
+@login_required
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk, seller=request.user)
+    product.delete()
+    return redirect('profile')
 
 def home(request):
     products = Product.objects.all()  # Default to showing all products
@@ -104,6 +162,17 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')  # Redirect to the login page after logout
+
+@csrf_exempt
+@login_required
+def profile_picture_upload(request):
+    if request.method == 'POST' and request.FILES.get('profile_picture'):
+        profile = request.user.profile
+        profile.profile_picture = request.FILES['profile_picture']
+        profile.save()
+        url_ = profile.profile_picture.url
+        return JsonResponse({'success': True, 'new_picture_url': url_})
+    return JsonResponse({'success': False})
 
 @login_required
 def delete_account(request):

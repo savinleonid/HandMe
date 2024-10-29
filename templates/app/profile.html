@@ -4,147 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Profile</title>
+    <title>User Profile</title>
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 600px;
-            margin: auto;
-        }
-
-        h2 {
-            color: #2b2a29; /* Dark grey */
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .profile-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-picture {
-            flex: 1;
-            text-align: center;
-            margin-right: 20px;
-        }
-
-        .profile-picture img {
-            width: 100px; /* Fixed size for profile picture */
-            height: 100px;
-            border-radius: 50%; /* Circular profile picture */
-            object-fit: cover; /* Cover to maintain aspect ratio */
-            border: 2px solid #f26522; /* Orange border */
-        }
-
-        .profile-info {
-            flex: 2;
-            text-align: left;
-        }
-
-        .profile-info h3 {
-            margin: 0;
-            font-size: 1.5em;
-            color: #2b2a29;
-        }
-
-        .profile-info p {
-            margin: 5px 0;
-        }
-
-        form {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="file"] {
-            margin-bottom: 10px;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #f26522; /* Orange color for button */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #e0571b; /* Darker shade on hover */
-        }
-
-        .btn-back {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #f26522;
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: color 0.3s;
-        }
-
-        .btn-back:hover {
-            color: #d35400; /* Darker shade on hover */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="content profile-page">
-        <h2>Your Profile</h2>
+    <!-- Back Button -->
+    <a href="{% url 'home' %}" class="back-btn">
+        <i class="fa fa-arrow-left"></i> Back to Home
+    </a>
+
+    <div class="container profile-container">
+        <h1 class="profile-title">My Profile</h1>
+
+        <!-- Profile Card with Editable Picture -->
         <div class="profile-card">
-            <!-- Profile Picture Section -->
-            <div class="profile-picture">
+            <!-- Profile Picture Section in Profile Page HTML -->
+            <div class="profile-picture" onclick="document.getElementById('edit-picture').click()">
                 {% if user.profile.profile_picture %}
-                    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+                    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" id="profile-picture">
                 {% else %}
-                    <img src="{% static 'profile_pics/default.png' %}" alt="Default Profile Picture">
+                    <img src="{% static 'profile_pics/default.png' %}" alt="Default Profile Picture" id="profile-picture">
                 {% endif %}
             </div>
             
-            <!-- Profile Information Section -->
-            <div class="profile-info">
-                <h3>{{ user.username }}</h3>
-                <p>Email: {{ user.email }}</p>
+            <input type="file" id="edit-picture" style="display: none;" onchange="uploadPicture(event)">
 
-                <!-- Form to update profile picture -->
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label for="id_profile_picture">Update Profile Picture:</label>
-                    {{ form.profile_picture }}
-                    <button type="submit">Save Changes</button>
-                </form>
+            
+            <div class="profile-info">
+                <h2>{{ user.username }}</h2>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Location:</strong> {{ user.profile.location }}</p>
+                <p><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+                
             </div>
         </div>
 
-        <a href="{% url 'home' %}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Back to Home
-        </a>
+        <!-- My Products Section -->
+        {% if user.product_set.all %}
+        <h2 class="my-products-title">My Products</h2>
+        <div class="product-grid">
+            {% for product in user.product_set.all %}
+            <a href="{% url 'product_detail' product.pk %}" class="product-link">
+                <div class="product-card">
+                    <h4 class="product_name">{{ product.title }}</h4>
+                    <div class="img">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        {% else %}
+                            <img src="{% static 'utils_img/default_product.png' %}" alt="Default Image">
+                        {% endif %}
+                    </div>
+                    <p class="description">{{ product.description|truncatewords:10 }}</p>
+                    <p class="price">${{ product.price }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-products">You haven’t added any products yet.</p>
+        <a href="{% url 'product_create' %}" class="add-product-btn">+ Add Product</a>
+        {% endif %}
+
+        <!-- Profile Action Buttons -->
+        <div class="profile-actions">
+            <form method="post" action="{% url 'delete_account' %}" id="delete-form">
+                {% csrf_token %}
+                <button type="button" class="delete-btn" onclick="confirmDelete()">Delete Account</button>
+            </form>
+        </div>
     </div>
+
+    <!-- Confirmation Popup -->
+    <div id="delete-popup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>Confirm Account Deletion</h3>
+            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            <button onclick="submitDelete()" class="confirm-btn">Yes, Delete</button>
+            <button onclick="closePopup()" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+
+    <script src="{% static 'app/js/script.js' %}"></script>
 </body>
 </html>

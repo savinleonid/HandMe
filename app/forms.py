@@ -5,6 +5,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['title', 'description', 'price', 'category', 'location', 'image']
+        exclude = ['category']
 
 class ProfileForm(forms.ModelForm):
     class Meta:

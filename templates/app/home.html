@@ -192,19 +192,6 @@
             <button onclick="submitDelete()" class="confirm-btn">Yes, Delete</button>
             <button onclick="closePopup()" class="cancel-btn">Cancel</button>
         </div>
-        <script>
-            function confirmDelete() {
-                document.getElementById("delete-popup").style.display = "flex";
-            }
-            
-            function closePopup() {
-                document.getElementById("delete-popup").style.display = "none";
-            }
-            
-            function submitDelete() {
-                document.getElementById("delete-account-form").submit();
-            }
-        </script>
     </div>
 
     <!-- pop up end -->
@@ -272,7 +259,7 @@
                                             </div>
                                         {% else %}
                                             <div class="product_img">
-                                                <img src="https://via.placeholder.com/150" alt="Default Image">
+                                                <img src="{% static 'utils_img/default_product.png' %} " alt="Default Image">
                                             </div>
                                             <!-- Placeholder for missing images -->
                                         {% endif %}
@@ -328,17 +315,9 @@
 <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'app/js/jquery-3.0.0.min.js' %}"></script>
 <script src="{% static 'app/js/plugin.js' %}"></script>
+<script src="{% static 'app/js/script.js' %}"></script>
 <!-- sidebar -->
 <script src="{% static 'app/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
 <script src="{% static 'app/js/custom.js' %}"></script>
-<script>
-    function openNav() {
-        document.getElementById("mySidenav").style.width = "250px";
-    }
-
-    function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-    }
-</script>
 </body>
-</html>
+</html

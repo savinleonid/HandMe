@@ -307,7 +307,9 @@ button {
     width: 120px; /* Adjust size as needed */
     height: 120px; /* Adjust size as needed */
     border-radius: 50%; /* Makes the image circular */
+    border: 3px solid #f26522;
     margin-right: 10px; /* Space between icon and username */
+    object-fit: cover;
 }
 
 .sidenav button.logout-btn {
@@ -496,6 +498,7 @@ button {
 
 .cancel-btn {
     background-color: #ddd;
+    color: #000000;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -1128,6 +1131,119 @@ input.mail_bt::placeholder {
 
 /* copyright section end */
 
-/* product detail page start */
+/* profile page start */
+.profile-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
 
-/* product detail page end */
+.profile-title {
+    font-size: 2em;
+    color: #30302e;
+    margin-bottom: 20px;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.05);
+}
+
+.profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f26522;
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    text-align: center;
+}
+
+.profile-info h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    font-size: 16px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.edit-btn, .delete-btn {
+    background-color: #f26522;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    background-color: #d54f1a;
+}
+
+.my-products-title {
+    font-size: 1.5em;
+    margin-top: 30px;
+    color: #30302e;
+}
+
+.no-products {
+    color: #666;
+    font-size: 1em;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-btn {
+    display: inline-block;
+    margin: 20px;
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+}
+
+.back-btn i {
+    margin-right: 5px;
+}
+
+.add-product-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #f26522;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+.add-product-btn:hover {
+    background-color: #d54f1a;
+}
+
+/* profile page end */
