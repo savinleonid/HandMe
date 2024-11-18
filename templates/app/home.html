@@ -97,7 +97,7 @@
                             <button class="logout-btn" type="submit" >Logout</button>
                         </form>
                         
-                        <form id="delete-account-form" method="POST" action="{% url 'delete_account' %}">
+                        <form id="delete-form" method="POST" action="{% url 'delete_account' %}">
                             {% csrf_token %}
                             <button type="button" onclick="confirmDelete()" class="delete-account-btn">Delete Account</button>
                         </form>

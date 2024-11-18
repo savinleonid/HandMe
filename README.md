@@ -44,6 +44,19 @@ The platform provides users a way to browse, add, and manage second-hand product
 ```bash
 git clone https://github.com/savinleonid/HandMe.git
 ```
+
+#### Create virtual environment: 
+
+```bash
+python -m venv .venv
+```
+
+#### Activate virtual environment: 
+
+```bash
+.venv\Scripts\activate
+```
+
 #### Install dependencies: 
 
 ```bash
